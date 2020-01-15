@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import myLogin from './../common/checkClass'
 import loginAPI from './../common/loginAPI'
+import Icon from 'react-native-vector-icons/AntDesign';
 
 export default class LoginView extends Component {
     static navigationOptions = {

@@ -4,6 +4,7 @@ import HomeScreen from './app/components/homeScreen'
 import DashboardScreen from './app/components/dashboard'
 import SplashScreen from './app/components/splashScreen'
 import HeaderScreen from './app/components/Header/header'
+import NewReservation from './app/components/Reservation/reservationForm'
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator, createBottomTabNavigator } from "react-navigation";
 
 
@@ -31,13 +32,14 @@ const DrawerNavigator = createDrawerNavigator(
 
 const AppNavigator = createStackNavigator({
   splash: SplashScreen,
-  Home: HomeScreen,
+  Home: HomeScreen
 
 });
 
 const switchNavigator = createSwitchNavigator({
   stack: AppNavigator,
   Dashboard: DrawerNavigator
+  
 })
 
 export default createAppContainer(switchNavigator);

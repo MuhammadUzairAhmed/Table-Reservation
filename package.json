@@ -10,9 +10,12 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "accordion-collapse-react-native": "^0.2.6",
+    "native-base": "^2.13.8",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-gesture-handler": "^1.5.3",
+    "react-native-paper": "^3.4.0",
     "react-native-reanimated": "^1.4.0",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^3.11.1"
