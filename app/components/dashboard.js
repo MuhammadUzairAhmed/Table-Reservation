@@ -15,24 +15,27 @@ export default class Dashboard extends React.Component {
     }
 
     getDeckId = (tables) => {
-
-        this.setState({ tables, displayTables: true })
+        this.props.navigation.navigate(`${tables}`)
+        // this.setState({ tables, displayTables: true })
     }
     displayDecks = (value) => {
         this.setState({ displayTables: value })
     }
     render() {
         const { displayTables, tables } = this.state
+        const { navigation } = this.props;
+        const userInfo = navigation.getParam('userInfo', 'NO-ID');
+        console.log(userInfo,'userInfo')
         return (
             <View style={{ flex: 1 }}>
-                <View style={{height:50,backgroundColor:'#1AB21D',display:'flex',justifyContent:'space-between',flexDirection:'row'}}>
+                {/* <View style={{height:50,backgroundColor:'#1AB21D',display:'flex',justifyContent:'space-between',flexDirection:'row'}}>
                     <TouchableOpacity onPress={this.props.navigation.openDrawer}>
                         <Text>Open Drawer</Text>
                     </TouchableOpacity>
                     <View ><Text>Kolachi</Text></View>
                     <View ><Text>13-jan-2020</Text></View>
-                </View>
-                {!displayTables && <Deck getTables={this.getDeckId} />}
+                </View> */}
+                 {!displayTables && <Deck getTables={this.getDeckId} userData={userInfo} />}
                 {displayTables && <Tables data={tables} displayTables={this.displayDecks} />}
             </View>
         );

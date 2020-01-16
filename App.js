@@ -5,11 +5,22 @@ import DashboardScreen from './app/components/dashboard'
 import SplashScreen from './app/components/splashScreen'
 import HeaderScreen from './app/components/Header/header'
 import NewReservation from './app/components/Reservation/reservationForm'
+import Deck from './app/components/Reservation/reservationForm'
+import Welcome from './app/components/welcomeScreen';
+
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator, createBottomTabNavigator } from "react-navigation";
 
 
+
+
+const Dashboard = createStackNavigator({
+  Welcome: Welcome,
+  Dashboards:DashboardScreen,
+  Reservation: NewReservation,
+})
+
 const bottomTabs = createBottomTabNavigator({
-  Dashboard: DashboardScreen,
+  Dashboard,
   MyAccount: HeaderScreen
 })
 
