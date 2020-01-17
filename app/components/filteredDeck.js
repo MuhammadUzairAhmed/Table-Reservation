@@ -7,7 +7,7 @@ import moment from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Divider } from 'react-native-paper';
-export default class Accordian extends Component {
+export default class filteredDeck extends Component {
 
     constructor(props) {
         super(props);
@@ -190,7 +190,7 @@ export default class Accordian extends Component {
     }
     render() {
         const { userData } = this.props
-  
+        const { futureReserve, isDateTimePickerVisible } = this.state
         return (
             <View style={{ flex: 1 }}>
                 <Modal
@@ -228,7 +228,7 @@ export default class Accordian extends Component {
                 <ScrollView>
                     {
                         this.state.data.map((item) => {
-                            return  <Collapse key={item.key}
+                            return item.locId == userData.location ? <Collapse key={item.key}
                                 onToggle={(isCollapsed) => this.checkToggle(isCollapsed, item.id)}>
 
                                 <CollapseHeader
@@ -293,7 +293,7 @@ export default class Accordian extends Component {
                                             //   <Button light onPress={() => this.setModalVisible(true)}><Text> Edit </Text></Button>
                                     })}
                                 </CollapseBody>
-                            </Collapse>
+                            </Collapse> : null
                         })
                     }
 

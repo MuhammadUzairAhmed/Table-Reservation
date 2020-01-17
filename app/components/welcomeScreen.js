@@ -3,22 +3,24 @@ import { Button, StyleSheet, View, Text } from 'react-native'
 
 export default class WelcomeScreen extends Component {
 
-    
+    static navigationOptions = {
+        header: null
+    }
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.buttonContainer}>
                     <Button
                         onPress={()=>this.props.navigation.navigate('Reservation')}
-                        title="Reservation"
-                        color="#689C4E"
+                        title="on preference"
+                        color="green"
                     />
                 </View>
                 <View style={styles.buttonContainer}>
                     <Button
-                        onPress={()=>this.props.navigation.navigate('Dashboards')}
-                        title="on preferencde"
-                        color="#689C4E"
+                        onPress={()=>this.props.navigation.navigate('Booked')}
+                        title="Reserved"
+                        color="green"
                     />
                 </View>
 

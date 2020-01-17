@@ -21,6 +21,18 @@ export default class Dashboard extends React.Component {
     displayDecks = (value) => {
         this.setState({ displayTables: value })
     }
+    totalInfo=(userData1,key,loc,tableData,selectedDateTime,tid)=>{
+        console.log(tid,'userData1')
+         this.props.navigation.navigate('Booked',{
+            userInfo: userData1,
+            deckData:{
+               key,
+               loc},
+               tableData,
+               selectedDateTime,
+               timeId: tid
+        })
+    }
     render() {
         const { displayTables, tables } = this.state
         const { navigation } = this.props;
@@ -35,7 +47,7 @@ export default class Dashboard extends React.Component {
                     <View ><Text>Kolachi</Text></View>
                     <View ><Text>13-jan-2020</Text></View>
                 </View> */}
-                 {!displayTables && <Deck getTables={this.getDeckId} userData={userInfo} />}
+                 {!displayTables && <Deck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} />}
                 {displayTables && <Tables data={tables} displayTables={this.displayDecks} />}
             </View>
         );

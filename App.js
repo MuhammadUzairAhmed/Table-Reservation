@@ -7,6 +7,8 @@ import HeaderScreen from './app/components/Header/header'
 import NewReservation from './app/components/Reservation/reservationForm'
 import Deck from './app/components/Reservation/reservationForm'
 import Welcome from './app/components/welcomeScreen';
+import PreviewReservation from './app/components/previewData'
+import BookedUser from './app/components/booked'
 
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator, createBottomTabNavigator } from "react-navigation";
 
@@ -17,11 +19,14 @@ const Dashboard = createStackNavigator({
   Welcome: Welcome,
   Dashboards:DashboardScreen,
   Reservation: NewReservation,
+  Preview: PreviewReservation,
+  Booked : BookedUser
 })
 
 const bottomTabs = createBottomTabNavigator({
   Dashboard,
-  MyAccount: HeaderScreen
+  Reservation: NewReservation,
+  bokeedUser: BookedUser
 })
 
 const DrawerNavigator = createDrawerNavigator(
