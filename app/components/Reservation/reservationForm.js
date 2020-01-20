@@ -37,7 +37,23 @@ export default class ReservationFrome extends Component {
         this.hideDateTimePicker();
     };
    
-
+componentDidUpdate(prevProps,prevStates){
+    if(prevProps != this.props){
+    const { navigation } = this.props;
+    const userDatas = navigation.getParam('userDatas', 'NO-ID');
+    this.setState({
+        name: userDatas.userData.name,
+        contact: userDatas.userData.contact,
+        altContact: userDatas.userData.altContact,
+        guests: userDatas.userData.guests,
+        category: userDatas.userData.category, 
+        location: userDatas.userData.location, 
+        smoke: userDatas.userData.smoke, 
+        other: userDatas.userData.other,
+        selectedDateTime: userDatas.userData.selectedDateTime
+    })
+    }
+}
     render() {
         const { name, contact, altContact, guests, category, location, smoke, other, isDateTimePickerVisible,selectedDateTime } = this.state
         return (

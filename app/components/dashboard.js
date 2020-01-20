@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import Deck from './Dashboard/deck'
+import FilteredDeck from './filteredDeck'
 import Tables from './Dashboard/tables'
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -23,7 +24,7 @@ export default class Dashboard extends React.Component {
     }
     totalInfo=(userData1,key,loc,tableData,selectedDateTime,tid)=>{
         console.log(tid,'userData1')
-         this.props.navigation.navigate('Booked',{
+         this.props.navigation.navigate('FilteredDeck',{
             userInfo: userData1,
             deckData:{
                key,
@@ -31,6 +32,18 @@ export default class Dashboard extends React.Component {
                tableData,
                selectedDateTime,
                timeId: tid
+        })
+    }
+    selectedComponent=(key)=>{
+        if(key == 'all'){
+            this.setState({displayTables: false})
+        }else{
+            this.setState({displayTables: true})
+        }
+    }
+    reservationForm=(item)=>{
+        this.props.navigation.navigate('Reservation',{
+            userDatas: item
         })
     }
     render() {
@@ -47,8 +60,15 @@ export default class Dashboard extends React.Component {
                     <View ><Text>Kolachi</Text></View>
                     <View ><Text>13-jan-2020</Text></View>
                 </View> */}
-                 {!displayTables && <Deck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} />}
-                {displayTables && <Tables data={tables} displayTables={this.displayDecks} />}
+                <TouchableOpacity onPress={()=>this.selectedComponent('all')}>
+                    <Text>display all</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.selectedComponent('filtered')}>
+                    <Text>filtered</Text>
+                </TouchableOpacity>
+                
+                 {!displayTables && <Deck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm} />}
+                {displayTables && <FilteredDeck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm}/>}
             </View>
         );
     }

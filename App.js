@@ -9,6 +9,7 @@ import Deck from './app/components/Reservation/reservationForm'
 import Welcome from './app/components/welcomeScreen';
 import PreviewReservation from './app/components/previewData'
 import BookedUser from './app/components/booked'
+import FilteredData from './app/components/filteredDeck'
 
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator, createBottomTabNavigator } from "react-navigation";
 
@@ -20,7 +21,8 @@ const Dashboard = createStackNavigator({
   Dashboards:DashboardScreen,
   Reservation: NewReservation,
   Preview: PreviewReservation,
-  Booked : BookedUser
+  Booked : BookedUser,
+  FilteredDeck : FilteredData
 })
 
 const bottomTabs = createBottomTabNavigator({
