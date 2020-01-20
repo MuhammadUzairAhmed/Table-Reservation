@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import Deck from './Dashboard/deck'
 import FilteredDeck from './filteredDeck'
 import Tables from './Dashboard/tables'
@@ -11,7 +11,13 @@ export default class Dashboard extends React.Component {
         super(props);
         this.state = {
             displayTables: false,
-            tables: []
+            tables: [],
+            defaultColor: 'white',
+            selectedColor: '#53ADAB',
+            defaultbackColor: '#53ADAB',
+            selectedBackColor: 'white',
+            defaultFont: 'normal',
+            selectedFont: 'bold',
         };
     }
 
@@ -36,9 +42,9 @@ export default class Dashboard extends React.Component {
     }
     selectedComponent=(key)=>{
         if(key == 'all'){
-            this.setState({displayTables: false})
+            this.setState({displayTables: false, defaultColor:'white',defaultbackColor:'#53ADAB',selectedBackColor:'white',selectedColor:'#53ADAB'})
         }else{
-            this.setState({displayTables: true})
+            this.setState({displayTables: true,selectedBackColor:'#53ADAB',selectedColor:'white',  defaultColor:'#53ADAB',defaultbackColor:'white'})
         }
     }
     reservationForm=(item)=>{
@@ -51,6 +57,8 @@ export default class Dashboard extends React.Component {
         const { navigation } = this.props;
         const userInfo = navigation.getParam('userInfo', 'NO-ID');
         console.log(userInfo,'userInfo')
+        const { defaultColor, selectedColor, defaultbackColor, selectedBackColor, defaultFont, selectedFont } = this.state
+      
         return (
             <View style={{ flex: 1 }}>
                 {/* <View style={{height:50,backgroundColor:'#1AB21D',display:'flex',justifyContent:'space-between',flexDirection:'row'}}>
@@ -60,12 +68,15 @@ export default class Dashboard extends React.Component {
                     <View ><Text>Kolachi</Text></View>
                     <View ><Text>13-jan-2020</Text></View>
                 </View> */}
-                <TouchableOpacity onPress={()=>this.selectedComponent('all')}>
-                    <Text>display all</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>this.selectedComponent('filtered')}>
-                    <Text>filtered</Text>
-                </TouchableOpacity>
+                 <View style={styles.headerChild2}>
+                    <TouchableOpacity onPress={()=>this.selectedComponent('all')}>
+                        <Text style={{ ...styles.subHeaderchildsCommon, ...styles.subHeaderchilds21, color: `${defaultColor}`, backgroundColor: `${defaultbackColor}`, fontWeight: `${defaultFont}` }}>All</Text>
+                    </TouchableOpacity>
+                     <TouchableOpacity onPress={()=>this.selectedComponent('filtered')}>
+                        <Text style={{ ...styles.subHeaderchildsCommon, ...styles.subHeaderchilds23, color: `${selectedColor}`, backgroundColor: `${selectedBackColor}`, fontWeight: `${selectedFont}` }}>Filtered</Text>
+                    </TouchableOpacity>
+                </View>
+               
                 
                  {!displayTables && <Deck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm} />}
                 {displayTables && <FilteredDeck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm}/>}
@@ -73,3 +84,30 @@ export default class Dashboard extends React.Component {
         );
     }
 }
+
+
+const styles = StyleSheet.create({
+    headerChild2: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        paddingBottom: 8
+    },
+    subHeaderchildsCommon: {
+        borderWidth: 1,
+        borderColor: 'white',
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingTop: 6,
+        paddingBottom: 6
+    },
+    subHeaderchilds21: {
+        borderTopLeftRadius: 6,
+        borderBottomLeftRadius: 6
+    },
+    subHeaderchilds22: {},
+    subHeaderchilds23: {
+        borderTopRightRadius: 6,
+        borderBottomRightRadius: 6,
+    },
+})

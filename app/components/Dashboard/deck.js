@@ -242,6 +242,7 @@ export default class filteredDeck extends Component {
     render() {
         const { userData } = this.props
         const { futureReserve, isDateTimePickerVisible } = this.state
+      
         // const { navigation } = this.props;
         // const userInfo = navigation.getParam('userInfo', 'NO-ID');
         // const deckData = navigation.getParam('deckData', 'NO-ID');
@@ -316,6 +317,7 @@ export default class filteredDeck extends Component {
                     </View>
                 </Modal>
                 <ScrollView>
+               
                     {
                         this.state.data.map((item) => {
                             return <Collapse key={item.key}
@@ -395,6 +397,7 @@ export default class filteredDeck extends Component {
 
 
 const styles = StyleSheet.create({
+   
     position: {
         fontSize: 14,
         flex: 1,
