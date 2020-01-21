@@ -9,7 +9,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Divider } from 'react-native-paper';
 
 export default class filteredDeck extends Component {
-
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -222,27 +222,45 @@ export default class filteredDeck extends Component {
     }
     savedData = () => {
         const { userData } = this.props
-        var reserved = {
-            deck: this.state.key,
-            tableName: this.state.sub.name,
-            seats: this.state.sub.seats,
-            tableNo: this.state.sub.tableNo,
-            userData
+        let getData = this.state.timeSlots.filter(item=> item.history == 'today'&& item.booked == true )
+        var getlastIndexValue;
+        //find lastindexof time
+        for(let i= this.state.timeSlots.length-1 ; i>=0 ;i--){
+            if(this.state.timeSlots[i].history == 'today' && this.state.timeSlots[i].booked == true){
+                getlastIndexValue = this.state.timeSlots[i].time;
+                break;
+            }
         }
-        this.setState({ save: reserved }, () => {
-            // this.setModalVisible(false, 'saved')
-            console.log(this.state.save)
+        //find firstindex value for time
+       
+        let getFirstTime = this.state.timeSlots.find(item=> item.history == 'today'&& item.booked == true )
+        this.setState({to:getData.length >1 ?getlastIndexValue:getFirstTime.to,from:getFirstTime.time},()=>{
+            var reserved = {
+                deck: this.state.key,
+                tableName: this.state.sub.name,
+                seats: this.state.sub.seats,
+                tableNo: this.state.sub.tableNo,
+                time:{from: this.state.from,to:this.state.to},
+                userData
+            }
+            this.setState({ save: reserved }, () => {
+                // this.setModalVisible(false, 'saved')
+                alert('Table Reserved Succcessfully')
+               
+            })    
         })
+        
+          
     }
     gotoFormPage = (item) => {
         console.log(this.state.save, 'gotopage')
+        this.setModalVisible(false, 'saved')
         if(this.state.save != ''){
-        this.props.formData(this.state.save)}
+            this.props.formData(this.state.save)}
     }
     render() {
         const { userData } = this.props
         const { futureReserve, isDateTimePickerVisible } = this.state
-      
         // const { navigation } = this.props;
         // const userInfo = navigation.getParam('userInfo', 'NO-ID');
         // const deckData = navigation.getParam('deckData', 'NO-ID');
@@ -286,7 +304,11 @@ export default class filteredDeck extends Component {
                                                         style={{ alignItems: 'center', borderRadius: 10 }}
                                                         onPress={() => this.selectEvent(item)}
                                                     />
-                                                    <TouchableOpacity onPress={() => item.booked == true && item.history == 'today' ? this.gotoFormPage(item) : null} style={{ backgroundColor: item.booked == true && item.history == 'today' ? '#BFEFEE' : item.booked == true && item.history == 'yesterday' ? 'red' : 'transparent', width: '79%', height: 50 }} >{item.booked == true && item.history == 'today' ? <Text>{this.state.key} {userData.name}</Text> : item.booked == true && item.history == 'yesterday' ? <Text>Already Reserved</Text> : <Text></Text>}</TouchableOpacity>
+                                                    <TouchableOpacity onPress={() => item.booked == true && item.history == 'today' ? this.gotoFormPage(item) : null} style={{ backgroundColor: item.booked == true && item.history == 'today' ? '#BFEFEE' : item.booked == true && item.history == 'yesterday' ? 'red' : 'transparent', width: '79%', height: 50 }} >{item.booked == true && item.history == 'today' ?
+                                                    <View style={{display:'flex'}}>
+                                                    <Text style={{fontSize:17}}>{userData.guests} persons and name {userData.name}</Text>
+                                                    <Text>{this.state.from} - {this.state.to}</Text>
+                                                    </View> :item.booked == true && item.history == 'yesterday' ?<Text>Already Reserved</Text> :<Text></Text>}</TouchableOpacity>
                                                 </View>
 
                                             </View>
@@ -317,7 +339,6 @@ export default class filteredDeck extends Component {
                     </View>
                 </Modal>
                 <ScrollView>
-               
                     {
                         this.state.data.map((item) => {
                             return <Collapse key={item.key}
@@ -397,7 +418,6 @@ export default class filteredDeck extends Component {
 
 
 const styles = StyleSheet.create({
-   
     position: {
         fontSize: 14,
         flex: 1,

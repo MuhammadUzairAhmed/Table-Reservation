@@ -48,7 +48,7 @@ export default class Dashboard extends React.Component {
         }
     }
     reservationForm=(item)=>{
-        this.props.navigation.navigate('Reservation',{
+        this.props.navigation.navigate('EditReservation',{
             userDatas: item
         })
     }
@@ -69,17 +69,18 @@ export default class Dashboard extends React.Component {
                     <View ><Text>13-jan-2020</Text></View>
                 </View> */}
                  <View style={styles.headerChild2}>
-                    <TouchableOpacity onPress={()=>this.selectedComponent('all')}>
-                        <Text style={{ ...styles.subHeaderchildsCommon, ...styles.subHeaderchilds21, color: `${defaultColor}`, backgroundColor: `${defaultbackColor}`, fontWeight: `${defaultFont}` }}>All</Text>
+                 <TouchableOpacity  onPress={()=>this.selectedComponent('all')} >
+                        <Text style={{ ...styles.subHeaderchildsCommon, ...styles.subHeaderchilds21, color: `${defaultColor}`, backgroundColor: `${defaultbackColor}`, fontWeight: `${defaultFont}` }}>Filtered</Text>
                     </TouchableOpacity>
-                     <TouchableOpacity onPress={()=>this.selectedComponent('filtered')}>
-                        <Text style={{ ...styles.subHeaderchildsCommon, ...styles.subHeaderchilds23, color: `${selectedColor}`, backgroundColor: `${selectedBackColor}`, fontWeight: `${selectedFont}` }}>Filtered</Text>
+                    <TouchableOpacity onPress={()=>this.selectedComponent('filtered')}>
+                        <Text style={{ ...styles.subHeaderchildsCommon, ...styles.subHeaderchilds23, color: `${selectedColor}`, backgroundColor: `${selectedBackColor}`, fontWeight: `${selectedFont}` }}>All</Text>
                     </TouchableOpacity>
+                    
                 </View>
                
+                {!displayTables && <FilteredDeck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm}/>}
+                 {displayTables && <Deck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm} />}
                 
-                 {!displayTables && <Deck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm} />}
-                {displayTables && <FilteredDeck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm}/>}
             </View>
         );
     }
@@ -91,11 +92,13 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingBottom: 8
+        paddingBottom: 8,
+        marginTop:5
+        
     },
     subHeaderchildsCommon: {
         borderWidth: 1,
-        borderColor: 'white',
+        borderColor: '#53ADAB',
         paddingLeft: 15,
         paddingRight: 15,
         paddingTop: 6,

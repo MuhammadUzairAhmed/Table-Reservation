@@ -10,16 +10,24 @@ import {
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 
 export default class Preview extends Component {
+    static navigationOptions = {
+        header: null
+    }
+    constructor(props){
+        super(props)
+        this.state ={
+            restLocations:[
+                {id:1,location:'indoor'},
+                {id:2,location:'outdoor'},
+                {id:3,location:'sea'}
+            ]
+        }
+    }
+    
     render() {
         const { navigation } = this.props;
-        const userInfo = navigation.getParam('userInfo', 'NO-ID');
-        const deckInfo = navigation.getParam('deckData', 'NO-ID');
-        const tableInfo = navigation.getParam('tableData', 'NO-ID');
-        const selectedDateTime = navigation.getParam('selectedDateTime', 'NO-DATE')
-        console.log(userInfo, 'users')
-        console.log(deckInfo, 'Deck')
-        console.log(tableInfo, 'tables')
-        console.log(selectedDateTime, 'selectedDateTime')
+        const userDatas = navigation.getParam('userDatas', 'NO-ID');
+        
         return (
             <ScrollView>
                 <Card>
@@ -28,89 +36,66 @@ export default class Preview extends Component {
                         <View style={styles.row}>
                             <View style={styles.nameContainer}>
                                 <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Name:</Text>
-                                <Text style={styles.mblTxt}>{userInfo.name}</Text>
+                                <Text style={styles.mblTxt}>{userDatas.userData.name}</Text>
                             </View>
                         </View>
-                        <View style={styles.row}>
-                            <View style={styles.nameContainer}>
-                                <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Category:</Text>
-                                <Text style={styles.mblTxt}>{userInfo.category}</Text>
-                            </View>
-                        </View>
+                        
                         <View style={styles.row}>
                             <View style={styles.nameContainer}>
                                 <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Contact:</Text>
-                                <Text style={styles.mblTxt}>{userInfo.contact}</Text>
+                                <Text style={styles.mblTxt}>{userDatas.userData.contact}</Text>
                             </View>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.nameContainer}>
                                 <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Total Guests:</Text>
-                                <Text style={styles.mblTxt}>{userInfo.guests}</Text>
+                                <Text style={styles.mblTxt}>{userDatas.userData.guests}</Text>
                             </View>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.nameContainer}>
                                 <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Location:</Text>
-                                <Text style={styles.mblTxt}>sad</Text>
-                            </View>
-                        </View>
-                        <View style={styles.row}>
-                            <View style={styles.nameContainer}>
-                                <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Time:</Text>
-                                <Text style={styles.mblTxt}>{userInfo.selectedDateTime}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.row}>
-                            <View style={styles.nameContainer}>
-                                <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Smoking:</Text>
-                                <Text style={styles.mblTxt}>{userInfo.smoke}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.row}>
-                            <View style={styles.nameContainer}>
-                                <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Other detail:</Text>
-                                <Text style={styles.mblTxt}>{userInfo.other}</Text>
-                            </View>
+                               { this.state.restLocations.map(item=> item.id == userDatas.userData.location? <Text style={styles.mblTxt}>{item.location}</Text>:null) }
+                               </View>
                         </View>
                         <Title>Deck</Title>
                         <View style={styles.row}>
                             <View style={styles.nameContainer}>
-                                <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Name:</Text>
-                                <Text style={styles.mblTxt}>{deckInfo.key}</Text>
+                                <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Deck:</Text>
+                                <Text style={styles.mblTxt}>{userDatas.deck}</Text>
                             </View>
                         </View>
                         <Title>Table</Title>
                         <View style={styles.row}>
                             <View style={styles.nameContainer}>
                                 <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Table Type:</Text>
-                                <Text style={styles.mblTxt}>{tableInfo.name}</Text>
+                                <Text style={styles.mblTxt}>{userDatas.tableName}</Text>
                             </View>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.nameContainer}>
                                 <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Total seats:</Text>
-                                <Text style={styles.mblTxt}>{tableInfo.seats}</Text>
+                                <Text style={styles.mblTxt}>{userDatas.seats}</Text>
                             </View>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.nameContainer}>
-                                <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Table Free in:</Text>
-                                <Text style={styles.mblTxt}>{tableInfo.statusFreeAt}</Text>
+                                <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Time:</Text>
+                                <Text style={styles.mblTxt}>{userDatas.time.from} - {userDatas.time.to}</Text>
                             </View>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.nameContainer}>
                                 <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Table No:</Text>
-                                <Text style={styles.mblTxt}>{tableInfo.tableNo}</Text>
+                                <Text style={styles.mblTxt}>{userDatas.tableNo}</Text>
                             </View>
                         </View>
 
 
                     </Card.Content>
                     <Card.Actions>
-                        <Button>Confirmed</Button>
-                        <Button>Cancel</Button>
+                        <Button onPress={()=>this.props.navigation.navigate('Reservation',{userDatas})}>Edit</Button>
+                      
                     </Card.Actions>
                 </Card>
             </ScrollView>
