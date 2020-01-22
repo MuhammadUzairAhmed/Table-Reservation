@@ -105,30 +105,30 @@ export default class filteredDeck extends Component {
             sub: {},
             userdat: {},
             timeSlots: [
-                { id: 1, time: '00:00', to: '1:00', booked: true, deck: 'salsa', table: 'atl-1', history: 'yesterday' },
-                { id: 2, time: '1:00', to: '2:00', booked: false, deck: 'atlantis', table: 'atl-1', history: 'today' },
-                { id: 3, time: '2:00', to: '3:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
-                { id: 4, time: '3:00', to: '4:00', booked: false, deck: 'Banthai', table: 'atl-1', history: 'today' },
-                { id: 5, time: '4:00', to: '5:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
-                { id: 6, time: '5:00', to: '6:00', booked: false, deck: 'Banthai', table: 'atl-1', history: 'today' },
-                { id: 7, time: '6:00', to: '7:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
-                { id: 8, time: '7:00', to: '8:00', booked: false, deck: 'Banthai', table: 'atl-1', history: 'today' },
-                { id: 9, time: '8:00', to: '9:00', booked: false, deck: 'salsa', table: 'atl-1', history: 'today' },
-                { id: 10, time: '9:00', to: '10:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
-                { id: 11, time: '10:00', to: '11:00', booked: false, deck: 'salsa', table: 'atl-1', history: 'today' },
-                { id: 12, time: '11:00', to: '12:00', booked: false, deck: 'salsa', table: 'atl-1', history: 'today' },
-                { id: 13, time: '12:00', to: '13:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
-                { id: 14, time: '13:00', to: '14:00', booked: false, deck: 'Bistro', table: 'atl-1', history: 'today' },
-                { id: 15, time: '14:00', to: '15:00', booked: false, deck: 'Bistro', table: 'atl-1', history: 'today' },
-                { id: 16, time: '15:00', to: '16:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
-                { id: 17, time: '16:00', to: '17:00', booked: false, deck: 'salsa', table: 'atl-1', history: 'today' },
-                { id: 18, time: '17:00', to: '18:00', booked: false, deck: 'Bistro', table: 'atl-1', history: 'today' },
-                { id: 19, time: '18:00', to: '19:00', booked: false, deck: 'Banthai', table: 'atl-1', history: 'today' },
-                { id: 20, time: '19:00', to: '20:00', booked: false, deck: 'Banthai', table: 'atl-1', history: 'today' },
-                { id: 21, time: '20:00', to: '21:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
-                { id: 22, time: '21:00', to: '22:00', booked: false, deck: 'salsa', table: 'atl-1', history: 'today' },
-                { id: 23, time: '22:00', to: '23:00', booked: true, deck: 'Bistro', table: 'atl-1', history: 'yesterday' },
-                { id: 24, time: '23:00', to: '00:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
+                { id: 1,guests:6,name:'daniyal', time: '00:00', to: '1:00', booked: true, deck: 'salsa', table: 'atl-1', history: 'yesterday' },
+                { id: 2,guests:6,name:'akhlaq', time: '1:00', to: '2:00', booked: false, deck: 'atlantis', table: 'atl-1', history: 'today' },
+                { id: 3,guests:6,name:'akhlaq', time: '2:00', to: '3:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
+                { id: 4,guests:6,name:'daniyal', time: '3:00', to: '4:00', booked: false, deck: 'Banthai', table: 'atl-1', history: 'today' },
+                { id: 5,guests:6,name:'daniyal', time: '4:00', to: '5:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
+                { id: 6,guests:6,name:'daniyal', time: '5:00', to: '6:00', booked: false, deck: 'Banthai', table: 'atl-1', history: 'today' },
+                { id: 7,guests:6,name:'daniyal', time: '6:00', to: '7:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
+                { id: 8,guests:6,name:'daniyal', time: '7:00', to: '8:00', booked: false, deck: 'Banthai', table: 'atl-1', history: 'today' },
+                { id: 9,guests:6,name:'daniyal', time: '8:00', to: '9:00', booked: false, deck: 'salsa', table: 'atl-1', history: 'today' },
+                { id: 10,guests:6,name:'daniyal', time: '9:00', to: '10:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
+                { id: 11,guests:6,name:'daniyal', time: '10:00', to: '11:00', booked: false, deck: 'salsa', table: 'atl-1', history: 'today' },
+                { id: 12,guests:6,name:'daniyal', time: '11:00', to: '12:00', booked: false, deck: 'salsa', table: 'atl-1', history: 'today' },
+                { id: 13,guests:6,name:'daniyal', time: '12:00', to: '13:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
+                { id: 14, guests:6,name:'daniyal',time: '13:00', to: '14:00', booked: false, deck: 'Bistro', table: 'atl-1', history: 'today' },
+                { id: 15,guests:6,name:'daniyal', time: '14:00', to: '15:00', booked: false, deck: 'Bistro', table: 'atl-1', history: 'today' },
+                { id: 16,guests:6,name:'daniyal', time: '15:00', to: '16:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
+                { id: 17,guests:6,name:'daniyal', time: '16:00', to: '17:00', booked: false, deck: 'salsa', table: 'atl-1', history: 'today' },
+                { id: 18,guests:6,name:'daniyal', time: '17:00', to: '18:00', booked: false, deck: 'Bistro', table: 'atl-1', history: 'today' },
+                { id: 19,guests:6,name:'daniyal', time: '18:00', to: '19:00', booked: false, deck: 'Banthai', table: 'atl-1', history: 'today' },
+                { id: 20,guests:6,name:'daniyal', time: '19:00', to: '20:00', booked: false, deck: 'Banthai', table: 'atl-1', history: 'today' },
+                { id: 21,guests:6,name:'daniyal', time: '20:00', to: '21:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
+                { id: 22,guests:6,name:'daniyal', time: '21:00', to: '22:00', booked: false, deck: 'salsa', table: 'atl-1', history: 'today' },
+                { id: 23,guests:6,name:'akhlaq', time: '22:00', to: '23:00', booked: true, deck: 'Bistro', table: 'atl-1', history: 'yesterday' },
+                { id: 24,guests:6,name:'daniyal', time: '23:00', to: '00:00', booked: false, deck: 'burcott', table: 'atl-1', history: 'today' },
 
             ],
             from: '',
@@ -287,7 +287,7 @@ export default class filteredDeck extends Component {
                             <View style={styles.popupContent}>
                                 <ScrollView contentContainerStyle={styles.modalInfo}>
                                     <Separator bordered style={{ marginBottom: 20, width: '100%', alignItems: 'center' }}>
-                                        <Text style={{ fontSize: 23 }}>17 JAN 2020</Text>
+                                        <Text style={{ fontSize: 23 }}>22 JAN 2020</Text>
                                     </Separator>
                                     <Text style={{ fontSize: 20 }}>Deck: {this.state.key}</Text>
                                     <Text style={{ fontSize: 20 }}>Table: {this.state.sub.name}</Text>
@@ -310,11 +310,11 @@ export default class filteredDeck extends Component {
                                                         style={{ alignItems: 'center', borderRadius: 10 }}
                                                         onPress={() => this.selectEvent(item)}
                                                     /> : null}
-                                                    <TouchableOpacity onPress={() => item.booked == true && item.history == 'today' ? this.gotoFormPage(item) : null} style={{ backgroundColor: item.booked == true && item.history == 'today' ? '#BFEFEE' : item.booked == true && item.history == 'yesterday' ? 'red' : 'transparent', width: '79%', height: 50 }} >{item.booked == true && item.history == 'today' ?
-                                                        <View style={{ display: 'flex' }}>
-                                                            <Text style={{ fontSize: 17 }}>{userData.guests} persons and name {userData.name}</Text>
-                                                            <Text>{this.state.from} - {this.state.to}</Text>
-                                                        </View> : item.booked == true && item.history == 'yesterday' ? <Text>Already Reserved</Text> : <Text></Text>}</TouchableOpacity>
+                                                    <TouchableOpacity onPress={() => item.booked == true && item.history == 'today' ? this.gotoFormPage(item) : null} style={{ backgroundColor: item.booked == true && item.history == 'today' ? '#B6BBC2' : item.booked == true && item.history == 'yesterday' ? '#6A7280' : 'transparent', width: '79%', height: 50 }} >{item.booked == true && item.history == 'today' ?
+                                                        <View style={{display:'flex'}}>
+                                                        <Text style={{fontSize:15}}>guest:{userData.guests} & name:{userData.name}</Text>
+                                                        {/* <Text>{this.state.from} - {this.state.to}</Text> */}
+                                                    </View>: item.booked == true && item.history == 'yesterday' ? <Text>guest:{item.guests} & name:{item.name}</Text> : <Text></Text>}</TouchableOpacity>
                                                 </View>
 
                                             </View>
@@ -397,7 +397,7 @@ export default class filteredDeck extends Component {
                     }
 
                 </ScrollView>
-                {this.state.justview != "editable" ?<TouchableOpacity onPress={() => this.props.navigation.navigate('Prefrences')} style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                {this.state.justview != "editable" ?<TouchableOpacity onPress={() => this.props.navigation.navigate('Prefrence')} style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                     <Icon
                         reverse
                         name='ios-add'

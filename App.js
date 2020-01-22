@@ -11,7 +11,7 @@ import PreviewReservation from './app/components/previewData'
 import BookedUser from './app/components/booked'
 import FilteredData from './app/components/filteredDeck'
 import EditReservation from './app/components/Reservation/editReservation'
-import PreferenceList from './app/components/preferenceList'
+import Preferences from './app/components/preferenceList'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator, createBottomTabNavigator } from "react-navigation";
@@ -26,29 +26,31 @@ const deckForBottom = createStackNavigator({
 })
 
 const preferenceForBottom = createStackNavigator({
-  PreferenceList,
-  Prefrences: NewReservation,
+  Preferences,
+  Prefrence: NewReservation,
   Dashboards:DashboardScreen,
   Preview: PreviewReservation,
   EditReservation
 },{
   defaultNavigationOptions:{
-    title: 'Preference',
+    title: 'Customers',
   }
 })
 
 const Reservation = createStackNavigator({
   // Welcome: Welcome,
   Reservation: BookedUser,
-  Booked : BookedUser,
   FilteredDeck : FilteredData,
   
-})
+},{
+  defaultNavigationOptions:{
+    title: 'Reservation List',
+  }})
 
 const bottomTabs = createBottomTabNavigator({
   Reservation,
   Deck: deckForBottom,
-  PrefrenceList: preferenceForBottom,
+  Preferences: preferenceForBottom,
 },
 
 {
@@ -59,7 +61,7 @@ const bottomTabs = createBottomTabNavigator({
       let iconName;
       if (routeName === 'Deck') {
         iconName = 'restaurant'
-      } else if (routeName === 'PrefrenceList') {
+      } else if (routeName === 'Preferences') {
         iconName = 'assignment'
       }
       else if (routeName === 'Reservation') {

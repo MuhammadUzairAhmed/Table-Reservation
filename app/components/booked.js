@@ -12,9 +12,7 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements'
 export default class Users extends Component {
-    static navigationOptions = {
-        header: null
-    }
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -132,7 +130,7 @@ export default class Users extends Component {
                         )
                     }} />
                     </View>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Prefrences')} style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Prefrence')} style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                     <Icon
                         reverse
                         name='ios-add'
