@@ -94,7 +94,7 @@ export default class Preview extends Component {
 
                     </Card.Content>
                     <Card.Actions>
-                        <Button onPress={()=>this.props.navigation.navigate('Reservation',{userDatas})}>Edit</Button>
+                        <Button onPress={()=>this.props.navigation.navigate('EditReservation',{userDatas})}>Edit</Button>
                       
                     </Card.Actions>
                 </Card>

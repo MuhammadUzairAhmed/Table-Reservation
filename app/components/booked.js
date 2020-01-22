@@ -10,9 +10,11 @@ import {
     ScrollView,
     Alert
 } from 'react-native';
-
+import { Icon } from 'react-native-elements'
 export default class Users extends Component {
-
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -106,14 +108,11 @@ export default class Users extends Component {
         const deckInfo = navigation.getParam('deckData', 'NO-ID');
         const tableInfo = navigation.getParam('tableData', 'NO-ID');
         const timeId = navigation.getParam('timeId', 'NO-DATE')
-        console.log(userInfo, 'users')
-        console.log(deckInfo, 'Deck')
-        console.log(tableInfo, 'tables')
-        console.log(timeId, 'timeId')
-        return (
+         return (
             <View style={styles.container}>
+                <View style={styles.tasks}>
                 <FlatList
-                    style={styles.tasks}
+                    
                     columnWrapperStyle={styles.listContainer}
                     data={this.state.timeSlots}
                     keyExtractor={(item) => {
@@ -124,14 +123,23 @@ export default class Users extends Component {
                             item.booked == true ? <TouchableOpacity style={[styles.card, { borderColor: item.color }]} onPress={() => { this.clickEventListener(item) }}>
                                 {/* <Image style={styles.image} source={{uri: this.__getCompletedIcon(item)}}/> */}
                                 <View style={styles.cardContent}>
-                                    <Text style={[styles.description, this.__getDescriptionStyle(item)]}>{item.deck}</Text>
-                                    <Text style={[styles.description, this.__getDescriptionStyle(item)]}>{item.table}</Text>
-                                    <Text style={[styles.description, this.__getDescriptionStyle(item)]}>Reserved</Text>
-                                     <Text style={styles.date}>{item.time} - {item.to}</Text>
+                                    <Text style={[styles.description, this.__getDescriptionStyle(item)]}>Deck: {item.deck}</Text>
+                                    <Text style={[styles.description, this.__getDescriptionStyle(item)]}>Table  type: {item.table}</Text>
+                                    <Text style={[styles.description, this.__getDescriptionStyle(item)]}>status: Reserved</Text>
+                                     <Text style={styles.date}>Time: {item.time} - {item.to}</Text>
                                 </View>
                             </TouchableOpacity> : null
                         )
                     }} />
+                    </View>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Prefrences')} style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                    <Icon
+                        reverse
+                        name='ios-add'
+                        type='ionicon'
+                        color='#C11A2C'
+                    />
+                </TouchableOpacity>
             </View>
         );
     }
@@ -144,7 +152,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#eeeeee"
     },
     tasks: {
-        flex: 1,
+        flex: 6,
     },
     cardContent: {
         marginLeft: 20,

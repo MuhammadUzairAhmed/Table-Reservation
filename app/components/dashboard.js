@@ -21,6 +21,7 @@ export default class Dashboard extends React.Component {
         };
     }
 
+   
     getDeckId = (tables) => {
         this.props.navigation.navigate(`${tables}`)
         // this.setState({ tables, displayTables: true })
@@ -48,7 +49,7 @@ export default class Dashboard extends React.Component {
         }
     }
     reservationForm=(item)=>{
-        this.props.navigation.navigate('EditReservation',{
+        this.props.navigation.navigate('Preview',{
             userDatas: item
         })
     }
@@ -79,7 +80,7 @@ export default class Dashboard extends React.Component {
                 </View>
                
                 {!displayTables && <FilteredDeck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm}/>}
-                 {displayTables && <Deck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm} />}
+                 {displayTables && <Deck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm} dispView="editable" />}
                 
             </View>
         );

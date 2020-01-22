@@ -5,11 +5,12 @@ import { Thumbnail, List, ListItem, Separator } from 'native-base';
 import { Container, Header, Content, Card, CardItem, Body, Item, Input, Form } from 'native-base';
 import moment, { relativeTimeThreshold } from "moment";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Divider } from 'react-native-paper';
+import { Icon } from 'react-native-elements'
 
 export default class filteredDeck extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -29,6 +30,7 @@ export default class filteredDeck extends Component {
             reservationForm: false,
             refresh: false,
             futureReserve: '',
+            justview: '',
             data: [
                 {
                     id: 1, key: 'Burcott', color: '#557E77',
@@ -134,6 +136,9 @@ export default class filteredDeck extends Component {
             save: ''
         }
     }
+    componentDidMount() {
+        this.setState({ justview: this.props.dispView })
+    }
     onValueChange2(value) {
         this.setState({
             selected2: value
@@ -222,41 +227,42 @@ export default class filteredDeck extends Component {
     }
     savedData = () => {
         const { userData } = this.props
-        let getData = this.state.timeSlots.filter(item=> item.history == 'today'&& item.booked == true )
+        let getData = this.state.timeSlots.filter(item => item.history == 'today' && item.booked == true)
         var getlastIndexValue;
         //find lastindexof time
-        for(let i= this.state.timeSlots.length-1 ; i>=0 ;i--){
-            if(this.state.timeSlots[i].history == 'today' && this.state.timeSlots[i].booked == true){
+        for (let i = this.state.timeSlots.length - 1; i >= 0; i--) {
+            if (this.state.timeSlots[i].history == 'today' && this.state.timeSlots[i].booked == true) {
                 getlastIndexValue = this.state.timeSlots[i].time;
                 break;
             }
         }
         //find firstindex value for time
-       
-        let getFirstTime = this.state.timeSlots.find(item=> item.history == 'today'&& item.booked == true )
-        this.setState({to:getData.length >1 ?getlastIndexValue:getFirstTime.to,from:getFirstTime.time},()=>{
+
+        let getFirstTime = this.state.timeSlots.find(item => item.history == 'today' && item.booked == true)
+        this.setState({ to: getData.length > 1 ? getlastIndexValue : getFirstTime.to, from: getFirstTime.time }, () => {
             var reserved = {
                 deck: this.state.key,
                 tableName: this.state.sub.name,
                 seats: this.state.sub.seats,
                 tableNo: this.state.sub.tableNo,
-                time:{from: this.state.from,to:this.state.to},
+                time: { from: this.state.from, to: this.state.to },
                 userData
             }
             this.setState({ save: reserved }, () => {
                 // this.setModalVisible(false, 'saved')
                 alert('Table Reserved Succcessfully')
-               
-            })    
+
+            })
         })
-        
-          
+
+
     }
     gotoFormPage = (item) => {
         console.log(this.state.save, 'gotopage')
         this.setModalVisible(false, 'saved')
-        if(this.state.save != ''){
-            this.props.formData(this.state.save)}
+        if (this.state.save != '') {
+            this.props.formData(this.state.save)
+        }
     }
     render() {
         const { userData } = this.props
@@ -299,38 +305,27 @@ export default class filteredDeck extends Component {
                                                 </View>
                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
-                                                    <Button
+                                                    {this.state.justview == "editable" ? <Button
                                                         title="Reserved"
                                                         style={{ alignItems: 'center', borderRadius: 10 }}
                                                         onPress={() => this.selectEvent(item)}
-                                                    />
+                                                    /> : null}
                                                     <TouchableOpacity onPress={() => item.booked == true && item.history == 'today' ? this.gotoFormPage(item) : null} style={{ backgroundColor: item.booked == true && item.history == 'today' ? '#BFEFEE' : item.booked == true && item.history == 'yesterday' ? 'red' : 'transparent', width: '79%', height: 50 }} >{item.booked == true && item.history == 'today' ?
-                                                    <View style={{display:'flex'}}>
-                                                    <Text style={{fontSize:17}}>{userData.guests} persons and name {userData.name}</Text>
-                                                    <Text>{this.state.from} - {this.state.to}</Text>
-                                                    </View> :item.booked == true && item.history == 'yesterday' ?<Text>Already Reserved</Text> :<Text></Text>}</TouchableOpacity>
+                                                        <View style={{ display: 'flex' }}>
+                                                            <Text style={{ fontSize: 17 }}>{userData.guests} persons and name {userData.name}</Text>
+                                                            <Text>{this.state.from} - {this.state.to}</Text>
+                                                        </View> : item.booked == true && item.history == 'yesterday' ? <Text>Already Reserved</Text> : <Text></Text>}</TouchableOpacity>
                                                 </View>
 
                                             </View>
                                         })}
                                     </View>
-
-                                    {/* 
-                                    {this.state.timeSlots.map((item) => {
-                                        return <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Text style={{ fontSize: 18 }}>{item.time}</Text>
-                                            <View style={{ backgroundColor: 'grey', width: 100, height: 2, marginTop: 20 }}></View>
-                                            {item.booked == false ?
-                                                <Button title="Booked" onPress={() => { this.getInfo(this.state.userdat, this.state.key, this.state.lid, this.state.sub, this.state.selectedDateTime, this.state.name, this.state.family, item.id) }} /> :
-                                                <Button color="red" title="Confirmed" />}
-                                        </TouchableOpacity>
-                                    })} */}
                                 </ScrollView>
                             </View>
                             <View style={styles.popupButtons}>
-                                <TouchableOpacity onPress={this.savedData} style={[styles.btnClose, { backgroundColor: '#ACC1AD', marginLeft: 2 }]}>
+                                {this.state.justview == "editable" ? <TouchableOpacity onPress={this.savedData} style={[styles.btnClose, { backgroundColor: '#ACC1AD', marginLeft: 2 }]}>
                                     <Text style={styles.txtClose}>Save</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> : null}
                                 <TouchableOpacity onPress={() => { this.setModalVisible(false, 'closed') }} style={[styles.btnClose, { backgroundColor: '#ACC1AD', marginLeft: 2 }]}>
                                     <Text style={styles.txtClose}>Close</Text>
                                 </TouchableOpacity>
@@ -363,7 +358,7 @@ export default class filteredDeck extends Component {
                                         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{item.key}</Text>
                                         <Text>{item.freeTables}</Text>
                                         {this.state.Locations.map((locitem) => locitem.id == item.locId ? <Text>{locitem.location}</Text> : null)}
-                                        <Icon name={this.state.valuesId == item.id ? "alpha-v" : "apple-keyboard-control"} size={24} color="black" />
+                                        <Icons name={this.state.valuesId == item.id ? "alpha-v" : "apple-keyboard-control"} size={24} color="black" />
                                     </View>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -376,14 +371,6 @@ export default class filteredDeck extends Component {
                                                         <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Table Name:</Text>
                                                         <Text style={styles.mblTxt}>{sub.name}</Text>
                                                     </View>
-                                                    {/* <View style={styles.nameContainer}>
-                                                            <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Status:</Text>
-                                                            <Text style={styles.mblTxt}>{sub.status}</Text>
-                                                        </View>
-                                                        <View style={styles.nameContainer}>
-                                                            <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Time:</Text>
-                                                            <Text style={styles.mblTxt}>{sub.time}</Text>
-                                                        </View> */}
                                                     <View style={styles.nameContainer}>
                                                         <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Total Seats:</Text>
                                                         <Text style={styles.mblTxt}>{sub.seats}</Text>
@@ -396,7 +383,7 @@ export default class filteredDeck extends Component {
                                                         <Text style={[styles.nameTxt, { marginTop: 11 }]} numberOfLines={1} ellipsizeMode="tail">Future Reservation:</Text>
                                                         <Button
                                                             onPress={() => this.setInfo(userData, item.key, item.locId, sub)}
-                                                            title="Add"
+                                                            title="set time"
                                                             color="#689C4E"
                                                         />
                                                     </View>
@@ -410,6 +397,14 @@ export default class filteredDeck extends Component {
                     }
 
                 </ScrollView>
+                {this.state.justview != "editable" ?<TouchableOpacity onPress={() => this.props.navigation.navigate('Prefrences')} style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                    <Icon
+                        reverse
+                        name='ios-add'
+                        type='ionicon'
+                        color='#C11A2C'
+                    />
+                </TouchableOpacity>:null}
             </View>
         )
     }

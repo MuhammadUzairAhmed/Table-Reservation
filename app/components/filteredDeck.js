@@ -376,15 +376,7 @@ export default class filteredDeck extends Component {
                                                         <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Table Name:</Text>
                                                         <Text style={styles.mblTxt}>{sub.name}</Text>
                                                     </View>
-                                                    {/* <View style={styles.nameContainer}>
-                                                            <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Status:</Text>
-                                                            <Text style={styles.mblTxt}>{sub.status}</Text>
-                                                        </View>
-                                                        <View style={styles.nameContainer}>
-                                                            <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Time:</Text>
-                                                            <Text style={styles.mblTxt}>{sub.time}</Text>
-                                                        </View> */}
-                                                    <View style={styles.nameContainer}>
+                                                   <View style={styles.nameContainer}>
                                                         <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Total Seats:</Text>
                                                         <Text style={styles.mblTxt}>{sub.seats}</Text>
                                                     </View>
@@ -396,7 +388,7 @@ export default class filteredDeck extends Component {
                                                         <Text style={[styles.nameTxt, { marginTop: 11 }]} numberOfLines={1} ellipsizeMode="tail">Future Reservation:</Text>
                                                         <Button
                                                             onPress={() => this.setInfo(userData, item.key, item.locId, sub)}
-                                                            title="Add"
+                                                            title="set time"
                                                             color="#689C4E"
                                                         />
                                                     </View>
