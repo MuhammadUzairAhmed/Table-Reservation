@@ -53,6 +53,18 @@ export default class Dashboard extends React.Component {
             userDatas: item
         })
     }
+    getTimeDataBack=(user, deck, table, seats, tableNo, timeSlots,guest,  name)=>{
+        this.props.navigation.navigate('EventCalender',{
+            user,
+            deck,
+            table,
+            seats,
+            tableNo,
+            timeSlots,
+            guest,
+            name
+            })
+    }
     render() {
         const { displayTables, tables } = this.state
         const { navigation } = this.props;
@@ -79,8 +91,8 @@ export default class Dashboard extends React.Component {
                     
                 </View>
                
-                {!displayTables && <FilteredDeck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm}/>}
-                 {displayTables && <Deck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm} dispView="editable" />}
+                {!displayTables && <FilteredDeck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm} getTimeData={this.getTimeDataBack} />}
+                 {displayTables && <Deck getTables={this.getDeckId} userData={userInfo} getAllInfo={this.totalInfo} formData={this.reservationForm} dispView="editable" getTimeData={this.getTimeDataBack} />}
                 
             </View>
         );

@@ -1,15 +1,10 @@
-import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, FlatList, StyleSheet, ScrollView, Modal, TextInput, Picker, Button } from "react-native";
-import { Collapse, CollapseHeader, CollapseBody, AccordionList } from "accordion-collapse-react-native";
-import { Thumbnail, List, ListItem, Separator } from 'native-base';
-import { Container, Header, Content, Card, CardItem, Body, Item, Input, Form } from 'native-base';
-import moment, { relativeTimeThreshold } from "moment";
-import DateTimePicker from "react-native-modal-datetime-picker";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { Divider } from 'react-native-paper';
+import React,{Component} from 'react'
 
-export default class filteredDeck extends Component {
-    
+import { View, TouchableOpacity, Text, FlatList, StyleSheet, ScrollView, Modal, TextInput, Picker, Button } from "react-native";
+import { Thumbnail, List, ListItem, Separator } from 'native-base';
+import moment from 'moment'
+export default class EventCalender extends Component{
+     
     constructor(props) {
         super(props);
         this.state = {
@@ -131,83 +126,22 @@ export default class filteredDeck extends Component {
             ],
             from: '',
             to: '',
-            save: ''
+            save: '',
+            currentDate:''
         }
     }
-    onValueChange2(value) {
-        this.setState({
-            selected2: value
-        });
-    }
-    getTableData = (data) => {
-        console.log(data, 'get table data')
-    }
-    changeDesign = (item) => {
-        console.log(item, 'checked')
-    }
-
-    openReservationModal = () => {
-        this.setState({ reservationForm: !this.state.reservationForm })
-    }
-    checkToggle = (isCollapsed, id) => {
-        console.log('fdsfdsf', id)
-        if (this.state.valuesId == id) {
-            this.setState({ valuesId: 0, collapsed: isCollapsed })
-        } else {
-            this.setState({ valuesId: id, collapsed: isCollapsed })
-        }
-    }
-
-    setModalVisible(visible, key) {
-        if (key == 'closed') {
-            this.setState({ modalVisible: visible }, () => {
-
-                this.setState({
-                    timeSlots: this.state.timeSlots.filter(item => {
-                        if (item.history == 'today') {
-                            item.booked = false
-                            return item
-                        }
-                        return item
-                    })
-                })
-            });
-        } else {
-            this.setState({ modalVisible: visible })
-        }
-    }
-
-    getInfo = (userData, key, loc, tableData, selectedDateTime, title, People, timeId) => {
-        console.log(timeId, 'userdata')
-        var selectedDateTime = { selectedDateTime, title, People }
-        this.setModalVisible(false)
-        this.props.getAllInfo(userData, key, loc, tableData, selectedDateTime, timeId)
-    }
-    showDateTimePicker = () => {
-        this.setState({ isDateTimePickerVisible: true });
-    };
-    hideDateTimePicker = () => {
-        this.setState({ isDateTimePickerVisible: false });
-    };
-    handleDatePicked = date => {
-        console.log("A date has been picked: ", date);
-        this.setState({ selectedDateTime: moment(date).format('MMMM, Do YYYY HH:mm') }, () => {
-            console.log(this.state.selectedDateTime)
-        })
-        this.hideDateTimePicker();
-    };
-    setInfo = (userData, key, loc, tableData) => {
-        this.setState({ userdat: userData, key, lid: loc, sub: tableData },()=>{
-            this.gotoEvent()
-        })
+    componentDidMount(){
+        this.setState({currentDate:moment().format('LL')})
         
-    }
-    getAlldata = () => {
-        this.setState({ seeAll: true }, () => {
-            setTimeout(() => {
-                this.setState({ data: this.state.data, tableData: this.state.tableData })
-            }, 2000)
-        })
+        //current date
+        var abcd = moment().format('LL')
+        //current time
+        var gdjf = moment().format('LTS')
+        var res = abcd+' '+ gdjf
+        var dateobj = new Date(res)
+        //converted ISO format now use moment to performa all operation
+        var B = dateobj.toISOString(); 
+        console.log(B,'result')
     }
     selectEvent = (id) => {
         if (id.history == 'today') {
@@ -234,186 +168,111 @@ export default class filteredDeck extends Component {
             }
         }
         //find firstindex value for time
+        const { navigation } = this.props;
+        const user = navigation.getParam('user', 'NO-ID');
+        const deck = navigation.getParam('deck', 'NO-ID');
+        const table = navigation.getParam('table', 'NO-ID');
+        const seats = navigation.getParam('seats', 'NO-ID');
+        const tableNo = navigation.getParam('tableNo', 'NO-ID');
+        const timeSlots = navigation.getParam('timeSlots', 'NO-ID');
+        const guest = navigation.getParam('guest', 'NO-ID');
+        const name = navigation.getParam('name', 'NO-ID');
         let getFirstTime = this.state.timeSlots.find(item=> item.history == 'today'&& item.booked == true )
         this.setState({to:getData.length >1 ?getlastIndexValue:getFirstTime.to,from:getFirstTime.time},()=>{
+            console.log(this.state.from,'fromss')
+            let res = this.state.currentDate+' '+this.state.from
+            let final = new Date(res)
             var reserved = {
-                deck: this.state.key,
-                tableName: this.state.sub.name,
-                seats: this.state.sub.seats,
-                tableNo: this.state.sub.tableNo,
+                deck: deck,
+                tableName: table,
+                seats: seats,
+                tableNo: tableNo,
                 time:{from: this.state.from,to:this.state.to},
-                userData
+                reservedTime: final.toISOString(),
+                userData : user
             }
             this.setState({ save: reserved }, () => {
                 // this.setModalVisible(false, 'saved')
                 alert('Table Reserved Succcessfully')
+                console.log(this.state.save,'timings')
                
             })    
         })
     }
     gotoFormPage = (item) => {
         console.log(this.state.save, 'gotopage')
-        this.setModalVisible(false, 'saved')
-        if(this.state.save != ''){
-            this.props.formData(this.state.save)}
+       if(this.state.save != ''){
+             this.props.navigation.navigate('Preview',{
+                userDatas: this.state.save
+            })
+        }
     }
-    gotoEvent =()=>{
-       var user=this.props.userData
-        var    deck=this.state.key
-         var   table= this.state.sub.name
-         var   seats= this.state.sub.seats
-         var   tableNo=this.state.sub.tableNo
-          var  timeSlots= this.state.timeSlots
-          var  guest= this.props.userData.guests
-          var  name=this.props.userData.name
-        this.props.getTimeData(
-            user,
-            deck,
-            table,
-            seats,
-            tableNo,
-            timeSlots,
-            guest,
-            name
-            )
-    }
-    render() {
-        const { userData } = this.props
-        const { futureReserve, isDateTimePickerVisible } = this.state
-        // const { navigation } = this.props;
-        // const userInfo = navigation.getParam('userInfo', 'NO-ID');
-        // const deckData = navigation.getParam('deckData', 'NO-ID');
-        // const tableData = navigation.getParam('tableData', 'NO-ID');
-        // const selectedDateTime = navigation.getParam('selectedDateTime', 'NO-ID');
-        // const timeId = navigation.getParam('timeId', 'NO-ID');
-
-        return (
-            <View style={{ flex: 1 }}>
-                <Modal
-                    animationType={'fade'}
-                    transparent={true}
-                    onRequestClose={() => this.setModalVisible(false, 'closed')}
-                    visible={this.state.modalVisible}>
-
-                    <View style={styles.popupOverlay}>
-                        <View style={styles.popup}>
-                            <View style={styles.popupContent}>
-                                <ScrollView contentContainerStyle={styles.modalInfo}>
-                                    <Separator bordered style={{ marginBottom: 20, width: '100%', alignItems: 'center' }}>
-                                        <Text style={{ fontSize: 23 }}>22 JAN 2020</Text>
-                                    </Separator>
-                                    <Text style={{ fontSize: 20 }}>Deck: {this.state.key}</Text>
-                                    <Text style={{ fontSize: 20 }}>Table: {this.state.sub.name}</Text>
-                                    <Text style={{ fontSize: 20 }}>Seats: {this.state.sub.seats}</Text>
-                                    <Text style={{ fontSize: 20 }}>Table No: {this.state.sub.tableNo}</Text>
-                                    <View >
-                                        {this.state.timeSlots.map(item => {
-                                            return <View style={{ display: 'flex' }}>
-                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                    <View style={{ marginRight: 2 }}>
-                                                        <Text >{item.time}</Text>
-                                                    </View>
-                                                    <View style={{ marginLeft: 2, marginTop: 8, backgroundColor: 'black', width: '79%', height: 2 }} />
-
-                                                </View>
-                                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-
-                                                    <Button
-                                                        title="Reserved"
-                                                        style={{ alignItems: 'center', borderRadius: 10 }}
-                                                        onPress={() => this.selectEvent(item)}
-                                                    />
-                                                    <TouchableOpacity onPress={() => item.booked == true && item.history == 'today' ? this.gotoFormPage(item) : null} style={{ backgroundColor: item.booked == true && item.history == 'today' ? '#B6BBC2' : item.booked == true && item.history == 'yesterday' ? '#6A7280' : 'transparent', width: '79%', height: 50 }} >{item.booked == true && item.history == 'today' ?
-                                                    <View style={{display:'flex'}}>
-                                                    <Text style={{fontSize:15}}>guest:{userData.guests} & name:{userData.name}</Text>
-                                                    {/* <Text>{this.state.from} - {this.state.to}</Text> */}
-                                                    </View> :item.booked == true && item.history == 'yesterday' ?<Text>guest:{item.guests} & name:{item.name}</Text>:<Text></Text>}</TouchableOpacity>
-                                                </View>
-                                            </View>
-                                        })}
+render(){
+    const { navigation } = this.props;
+    const user = navigation.getParam('user', 'NO-ID');
+    const deck = navigation.getParam('deck', 'NO-ID');
+    const table = navigation.getParam('table', 'NO-ID');
+    const seats = navigation.getParam('seats', 'NO-ID');
+    const tableNo = navigation.getParam('tableNo', 'NO-ID');
+    const timeSlots = navigation.getParam('timeSlots', 'NO-ID');
+    const guest = navigation.getParam('guest', 'NO-ID');
+    const name = navigation.getParam('name', 'NO-ID');
+    const viewData = navigation.getParam('viewData', 'NO-ID');
+   
+    return(
+        <View style={{flex:1}} >
+        
+            <View style={{flex:4}}>
+                <ScrollView >
+                    <Separator bordered style={{ marginBottom: 20, width: '100%', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 23 }}>{this.state.currentDate}</Text>
+                    </Separator>
+                    <Text style={{ fontSize: 20 }}>Deck: {deck}</Text>
+                    <Text style={{ fontSize: 20 }}>Table: {table}</Text>
+                    <Text style={{ fontSize: 20 }}>Seats: {seats}</Text>
+                    <Text style={{ fontSize: 20 }}>Table No: {tableNo}</Text>
+                    <View >
+                        {this.state.timeSlots.map(item => {
+                            return <View style={{ display: 'flex' }}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View style={{ marginRight: 2 }}>
+                                        <Text >{item.time}</Text>
                                     </View>
-                                </ScrollView>
+                                    <View style={{ marginLeft: 2, marginTop: 8, backgroundColor: 'black', width: '79%', height: 2 }} />
+
+                                </View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                                {viewData == true ?null: <Button
+                                        title="Reserved"
+                                        style={{ alignItems: 'center', borderRadius: 10 }}
+                                        onPress={() => this.selectEvent(item)}
+                                    />}
+                                    <TouchableOpacity onPress={() => item.booked == true && item.history == 'today' ? this.gotoFormPage(item) : null} style={{ backgroundColor: item.booked == true && item.history == 'today' ? '#B6BBC2' : item.booked == true && item.history == 'yesterday' ? '#6A7280' : 'transparent', width: '79%', height: 50 }} >{item.booked == true && item.history == 'today' ?
+                                    <View style={{display:'flex'}}>
+                                    <Text style={{fontSize:15}}>guest:{guest} & name:{name}</Text>
+                                    {/* <Text>{this.state.from} - {this.state.to}</Text> */}
+                                    </View> :item.booked == true && item.history == 'yesterday' ?<Text>guest:{item.guests} & name:{item.name}</Text>:<Text></Text>}</TouchableOpacity>
+                                </View>
                             </View>
-                            <View style={styles.popupButtons}>
-                                <TouchableOpacity onPress={this.savedData} style={[styles.btnClose, { backgroundColor: '#ACC1AD', marginLeft: 2 }]}>
-                                    <Text style={styles.txtClose}>Save</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { this.setModalVisible(false, 'closed') }} style={[styles.btnClose, { backgroundColor: '#ACC1AD', marginLeft: 2 }]}>
-                                    <Text style={styles.txtClose}>Close</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                        })}
                     </View>
-                </Modal>
-                <ScrollView>
-                    {
-                        this.state.data.map((item) => {
-                            return item.locId == userData.location ? <Collapse key={item.key}
-                                onToggle={(isCollapsed) => this.checkToggle(isCollapsed, item.id)}>
-
-                                <CollapseHeader
-                                    style={{
-                                        marginTop: 10,
-                                        backgroundColor: 'white',
-                                        shadowColor: 'black',
-                                        shadowOpacity: .3,
-                                        shadowOffset: {
-                                            height: 1,
-                                            width: -2
-                                        },
-                                        elevation: 2,
-                                        paddingTop: 5
-                                    }}
-                                    onPress={() => this.changeDesign(item.id)}
-                                >
-                                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{item.key}</Text>
-                                        <Text>{item.freeTables}</Text>
-                                        {this.state.Locations.map((locitem) => locitem.id == item.locId ? <Text>{locitem.location}</Text> : null)}
-                                        <Icon name={this.state.valuesId == item.id ? "alpha-v" : "apple-keyboard-control"} size={24} color="black" />
-                                    </View>
-                                </CollapseHeader>
-                                <CollapseBody>
-                                    {this.state.tableData.map((sub) => {
-                                        return <TouchableOpacity onPress={() => this.getTableData(sub)}>
-                                            <View style={styles.row}>
-
-                                                <View>
-                                                    <View style={styles.nameContainer}>
-                                                        <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Table Name:</Text>
-                                                        <Text style={styles.mblTxt}>{sub.name}</Text>
-                                                    </View>
-                                                   <View style={styles.nameContainer}>
-                                                        <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Total Seats:</Text>
-                                                        <Text style={styles.mblTxt}>{sub.seats}</Text>
-                                                    </View>
-                                                    <View style={styles.nameContainer}>
-                                                        <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">Table free in:</Text>
-                                                        <Text style={styles.mblTxt}>{sub.statusFreeAt}</Text>
-                                                    </View>
-                                                    <View style={styles.nameContainer}>
-                                                        <Text style={[styles.nameTxt, { marginTop: 11 }]} numberOfLines={1} ellipsizeMode="tail">Future Reservation:</Text>
-                                                        <Button
-                                                            onPress={() => this.setInfo(userData, item.key, item.locId, sub)}
-                                                            title="set time"
-                                                            color="#689C4E"
-                                                        />
-                                                    </View>
-                                                </View>
-                                            </View>
-                                        </TouchableOpacity>
-                                    })}
-                                </CollapseBody>
-                            </Collapse> : null
-                        })
-                    }
-
                 </ScrollView>
+                <View style={styles.popupButtons}>
+                {viewData == true ?null:<TouchableOpacity onPress={this.savedData} style={[styles.btnClose, { backgroundColor: '#ACC1AD', marginLeft: 2 }]}>
+                    <Text style={styles.txtClose}>Save</Text>
+                </TouchableOpacity>}
+                
             </View>
-        )
-    }
-
+            </View>
+          
+        
+    </View>  
+    )
 }
+}
+
+
 
 
 const styles = StyleSheet.create({

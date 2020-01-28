@@ -9,6 +9,7 @@ import Icons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Divider } from 'react-native-paper';
 import { Icon } from 'react-native-elements'
 
+
 export default class filteredDeck extends Component {
 
     constructor(props) {
@@ -202,8 +203,10 @@ export default class filteredDeck extends Component {
         this.hideDateTimePicker();
     };
     setInfo = (userData, key, loc, tableData) => {
-        this.setState({ userdat: userData, key, lid: loc, sub: tableData })
-        this.setModalVisible(true)
+        this.setState({ userdat: userData, key, lid: loc, sub: tableData },()=>{
+            this.gotoEvent()
+        })
+        
     }
     getAlldata = () => {
         this.setState({ seeAll: true }, () => {
@@ -227,35 +230,32 @@ export default class filteredDeck extends Component {
     }
     savedData = () => {
         const { userData } = this.props
-        let getData = this.state.timeSlots.filter(item => item.history == 'today' && item.booked == true)
+        let getData = this.state.timeSlots.filter(item=> item.history == 'today'&& item.booked == true )
         var getlastIndexValue;
         //find lastindexof time
-        for (let i = this.state.timeSlots.length - 1; i >= 0; i--) {
-            if (this.state.timeSlots[i].history == 'today' && this.state.timeSlots[i].booked == true) {
+        for(let i= this.state.timeSlots.length-1 ; i>=0 ;i--){
+            if(this.state.timeSlots[i].history == 'today' && this.state.timeSlots[i].booked == true){
                 getlastIndexValue = this.state.timeSlots[i].time;
                 break;
             }
         }
         //find firstindex value for time
-
-        let getFirstTime = this.state.timeSlots.find(item => item.history == 'today' && item.booked == true)
-        this.setState({ to: getData.length > 1 ? getlastIndexValue : getFirstTime.to, from: getFirstTime.time }, () => {
+        let getFirstTime = this.state.timeSlots.find(item=> item.history == 'today'&& item.booked == true )
+        this.setState({to:getData.length >1 ?getlastIndexValue:getFirstTime.to,from:getFirstTime.time},()=>{
             var reserved = {
                 deck: this.state.key,
                 tableName: this.state.sub.name,
                 seats: this.state.sub.seats,
                 tableNo: this.state.sub.tableNo,
-                time: { from: this.state.from, to: this.state.to },
+                time:{from: this.state.from,to:this.state.to},
                 userData
             }
             this.setState({ save: reserved }, () => {
                 // this.setModalVisible(false, 'saved')
                 alert('Table Reserved Succcessfully')
-
-            })
+               
+            })    
         })
-
-
     }
     gotoFormPage = (item) => {
         console.log(this.state.save, 'gotopage')
@@ -264,6 +264,39 @@ export default class filteredDeck extends Component {
             this.props.formData(this.state.save)
         }
     }
+    gotoEvent =()=>{
+        var user=this.props.userData
+         var    deck=this.state.key
+          var   table= this.state.sub.name
+          var   seats= this.state.sub.seats
+          var   tableNo=this.state.sub.tableNo
+           var  timeSlots= this.state.timeSlots
+           var  guest=  this.state.justview != "editable"?'': this.props.userData.guests
+           var  name=this.state.justview != "editable"?'':this.props.userData.name
+            var viewData;
+           this.state.justview != "editable"?
+           this.props.navigation.navigate('EventCalender',{
+            user,
+            deck,
+            table,
+            seats,
+            tableNo,
+            timeSlots,
+            guest,
+            name,
+            viewData:true
+            })
+           : this.props.getTimeData(
+             user,
+             deck,
+             table,
+             seats,
+             tableNo,
+             timeSlots,
+             guest,
+             name
+             )
+     }
     render() {
         const { userData } = this.props
         const { futureReserve, isDateTimePickerVisible } = this.state
@@ -301,7 +334,6 @@ export default class filteredDeck extends Component {
                                                         <Text >{item.time}</Text>
                                                     </View>
                                                     <View style={{ marginLeft: 2, marginTop: 8, backgroundColor: 'black', width: '79%', height: 2 }} />
-
                                                 </View>
                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 

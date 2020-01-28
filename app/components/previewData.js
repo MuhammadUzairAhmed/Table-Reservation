@@ -27,7 +27,7 @@ export default class Preview extends Component {
     render() {
         const { navigation } = this.props;
         const userDatas = navigation.getParam('userDatas', 'NO-ID');
-        
+        console.log(userDatas.reservedTime,'converted')
         return (
             <ScrollView>
                 <Card>

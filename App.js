@@ -12,13 +12,15 @@ import BookedUser from './app/components/booked'
 import FilteredData from './app/components/filteredDeck'
 import EditReservation from './app/components/Reservation/editReservation'
 import Preferences from './app/components/preferenceList'
+import EventCalender from './app/components/eventCalender'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator, createBottomTabNavigator } from "react-navigation";
 import {View,Text} from 'react-native'
 
 const deckForBottom = createStackNavigator({
-  Deck: Deck
+  Deck: Deck,
+  EventCalender,
 },{
   defaultNavigationOptions:{
     title: 'Deck View'
@@ -30,6 +32,7 @@ const preferenceForBottom = createStackNavigator({
   Prefrence: NewReservation,
   Dashboards:DashboardScreen,
   Preview: PreviewReservation,
+  EventCalender,
   EditReservation
 },{
   defaultNavigationOptions:{
@@ -42,17 +45,13 @@ const Reservation = createStackNavigator({
   Reservation: BookedUser,
   FilteredDeck : FilteredData,
   
-},{
-  defaultNavigationOptions:{
-    title: 'Reservation List',
-  }})
+})
 
 const bottomTabs = createBottomTabNavigator({
   Reservation,
   Deck: deckForBottom,
   Preferences: preferenceForBottom,
 },
-
 {
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
@@ -78,7 +77,7 @@ const bottomTabs = createBottomTabNavigator({
     inactiveTintColor: 'gray',
     activeBackgroundColor:'green',
     labelStyle:{
-      fontSize:17
+      fontSize:13
     },
     style:{
     borderTopColor:'green',
