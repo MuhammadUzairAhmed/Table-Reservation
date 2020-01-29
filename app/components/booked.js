@@ -37,7 +37,7 @@ export default class Users extends Component {
             locationData: [],
             reservedData: [],
             search: '',
-            workinproperly: false
+            workinproperly:false
         };
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -102,7 +102,7 @@ export default class Users extends Component {
         //get custoer data
         reservationData.getCustomers()
             .then((res) => { return res.json() })
-            .then(data => this.setState({ customerData: data.customer }, () => this.performOperation()))
+            .then(data => this.setState({customerData: data.customer }, () => this.performOperation()))
 
     }
     performOperation = () => {
@@ -155,7 +155,7 @@ export default class Users extends Component {
             }
 
         }
-        this.setState({ reservedData: arr, workinproperly: true })
+        this.setState({ reservedData: arr,workinproperly:true })
     }
     sortedList = () => {
         const { sort } = this.state
@@ -231,14 +231,14 @@ export default class Users extends Component {
         })
     }
     render() {
-        const { search, sort, workinproperly } = this.state;
-        let filteredData = this.state.reservedData.filter(items => {
+        const { search, sort,workinproperly } = this.state;
+      let filteredData = this.state.reservedData.filter(items => {
             return (items.name.indexOf(search.toLowerCase()) !== -1) || (items.table.indexOf(search.toLowerCase()) !== -1);
         })
         return (
             <View style={styles.container}>
                 <Header />
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+               <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
 
                     <TouchableOpacity style={{ margin: 2, display: 'flex', justifyContent: 'space-between', flexDirection: 'row', backgroundColor: 'orange', paddingRight: 6, borderBottomWidth: 2, borderRadius: 8 }} onPress={this.sortedList}>
                         {sort ? <Icon
@@ -255,7 +255,7 @@ export default class Users extends Component {
                                 color='orange'
                                 size={10}
                             />}
-                        <Text style={{ marginTop: 8, marginRight: 2, color: 'white' }}>Sort by time</Text>
+                        <Text style={{ marginTop: 8,marginRight:2,color:'white' }}>Sort by time</Text>
                     </TouchableOpacity>
                     <Picker
                         selectedValue={this.state.language}
@@ -268,7 +268,7 @@ export default class Users extends Component {
                     </Picker>
                     <TouchableOpacity onPress={this.changeLayout} style={{ paddingTop: 7, display: 'flex', justifyContent: 'space-around', flexDirection: 'row', backgroundColor: 'orange', padding: 5, margin: 2, width: 100, borderBottomWidth: 2, borderRadius: 8 }}>
                         <Icons name='search1' size={15} color="white" />
-                        <Text style={{ color: 'white' }}>Search</Text>
+                        <Text style={{color:'white'}}>Search</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -283,7 +283,7 @@ export default class Users extends Component {
                     />
                 </View>
                 <View style={styles.tasks}>
-                    {workinproperly && <FlatList
+                   {workinproperly && <FlatList
 
                         columnWrapperStyle={styles.listContainer}
                         data={filteredData}
@@ -292,19 +292,17 @@ export default class Users extends Component {
                         }}
                         renderItem={({ item }) => {
                             return (
-                                item.timeChecking ? <TouchableOpacity style={[styles.card, {
-                                    borderColor: item.reservedTime.split(" ").pop() == 'ago' ? 'green' :
-                                        item.reservedTime.split(" ").pop() == 'hours' && item.reservedTime[3] <= 3 && item.reservedTime[4] == '' && item.reservedTime[3] >= 0 ? 'orange' :
-                                            item.reservedTime.split(" ").pop() == 'hour' ? 'red' : 'blue'
-                                }]} onPress={() => { this.clickEventListener(item) }}>
-                                    <DeckList
-                                        booked={true}
-                                        itemDeck={item.deck}
-                                        itemTable={item.table}
-                                        keyName="customer Name:" itemName={item.name}
-                                        keyReserved="Reserved from:" itemFrom={item.from} itemTo={item.to}
-                                        keyGuests="Guests:" itemGuests={item.guests}
-                                        itemReservedTime={item.reservedTime}
+                                item.timeChecking ? <TouchableOpacity 
+                                    onPress={() => { this.clickEventListener(item) }}>
+                                    <DeckList 
+                                    borderStyle={item.reservedTime}
+                                    booked={true}
+                                    itemDeck={item.deck}
+                                    itemTable={item.table}
+                                    keyName="customer Name:" itemName={item.name}
+                                    keyReserved="Reserved from:" itemFrom={item.from} itemTo={item.to}
+                                    keyGuests="Guests:" itemGuests={item.guests}
+                                    itemReservedTime={item.reservedTime}
                                     />
                                 </TouchableOpacity> : null
                             )
@@ -326,14 +324,14 @@ export default class Users extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+   container: {
         flex: 1,
 
     },
     tasks: {
         flex: 10
     },
-
+    
     image: {
         width: 25,
         height: 25,
@@ -347,7 +345,7 @@ const styles = StyleSheet.create({
         borderLeftWidth: 6,
 
     },
-
+   
     date: {
         fontSize: 14,
         flex: 1,

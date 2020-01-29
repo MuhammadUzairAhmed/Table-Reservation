@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, FlatList, StyleSheet, ScrollView, Modal, TextInput, Picker, Button } from "react-native";
+import {
+    View, TouchableOpacity, Text, FlatList, StyleSheet, ScrollView, Modal, TextInput, Picker, Button
+    , LayoutAnimation, Platform, UIManager,
+} from "react-native";
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from "accordion-collapse-react-native";
 import { Thumbnail, List, ListItem, Separator } from 'native-base';
 import { Container, Header, Content, Card, CardItem, Body, Item, Input, Form } from 'native-base';
@@ -9,6 +12,7 @@ import Icons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Divider } from 'react-native-paper';
 import { Icon } from 'react-native-elements'
 import reservationData from './../../common/reservation'
+import DeckList from './../deckList'
 
 export default class filteredDeck extends Component {
 
@@ -18,7 +22,7 @@ export default class filteredDeck extends Component {
             collapsed: false,
             isDateTimePickerVisible: false,
             modalVisible: false,
-            expanded: false,
+            // expanded: false,
             valuesId: 0,
             prevValueId: 0,
             numColumns: 3,
@@ -135,31 +139,69 @@ export default class filteredDeck extends Component {
             from: '',
             to: '',
             save: '',
-            deckData:[],
-            tableData:[]
+            deckData: [],
+            tableDatas: [],
+            getFetchedData: [],
+            alldata: false,
+            expanded: false,
+            id: 1,
+            itemid:0
+        }
+        if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental(true);
         }
     }
     componentDidMount() {
         this.setState({ justview: this.props.dispView })
-
-
-        getDeckData = () => {
-            //get Deck data
-            reservationData.getDecks()
-                .then((res) => { return res.json() })
-                .then(data => {
-                    this.setState({ deckData: data.deck })
-                    this.getTableData()
+        //get Deck data
+        reservationData.getDecks()
+            .then((res) => { return res.json() })
+            .then(data => {
+                this.setState({ deckData: data.deck }, () => {
+                    this.getTableDatas()
                 })
-        }
+
+            })
+
     }
-    getTableData = () => {
+    getTableDatas = () => {
         //get table data
         reservationData.getTableData()
             .then((res) => { return res.json() })
-            .then(data => this.setState({ tableData: data.table }, () => {
-                
+            .then(data => this.setState({ tableDatas: data.table }, () => {
+
+                this.operateData()
             }))
+    }
+    operateData = () => {
+        const { deckData, tableDatas } = this.state
+
+        var arr = [];
+
+        for (var i = 0; i < deckData.length; i++) {
+            var value = {}
+            var free = 0;
+            var total = 0;
+            for (var j = 0; j < tableDatas.length; j++) {
+                if (deckData[i].id == tableDatas[j].deck_id) {
+                    if (tableDatas[j].status == 1) {
+                        free++;
+                    }
+                    total++;
+                }
+            }
+            value.freeTables = free
+            value.totalTables = total
+            value.name = deckData[i].name
+            value.id = deckData[i].id
+            value.location = deckData[i].loc_id
+            arr.push(value)
+        }
+        this.setState({ getFetchedData: arr }, () => this.setState({ alldata: true }))
+    }
+    changeLayout = (id) => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        this.setState({ expanded: !this.state.expanded, itemid: id });
     }
 
     onValueChange2(value) {
@@ -228,7 +270,6 @@ export default class filteredDeck extends Component {
         this.setState({ userdat: userData, key, lid: loc, sub: tableData }, () => {
             this.gotoEvent()
         })
-
     }
     getAlldata = () => {
         this.setState({ seeAll: true }, () => {
@@ -275,7 +316,6 @@ export default class filteredDeck extends Component {
             this.setState({ save: reserved }, () => {
                 // this.setModalVisible(false, 'saved')
                 alert('Table Reserved Succcessfully')
-
             })
         })
     }
@@ -320,10 +360,53 @@ export default class filteredDeck extends Component {
     }
     render() {
         const { userData } = this.props
-        const { futureReserve, isDateTimePickerVisible } = this.state
+        const { futureReserve, isDateTimePickerVisible, getFetchedData, tableDatas } = this.state
 
         return (
             <View style={{ flex: 1 }}>
+                <ScrollView>
+                {getFetchedData.map(item => <View>
+                    <TouchableOpacity onPress={()=>this.changeLayout(item.id)} style={styles.notificationBox}>
+                        <View style={styles.subnotificationBox}>
+                            <View >
+                            <Text>{item.name}</Text>
+                            </View>
+                            <View style={{ }}>
+                                <Text style={styles.descriptionForm}>{item.freeTables}/{item.totalTables}</Text>
+                            </View>
+                            <View style={{ }}>
+                                <Text >icon</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                    
+                        {tableDatas.map(subitem => 
+                            subitem.deck_id == item.id && subitem.deck_id == this.state.itemid? 
+                            <TouchableOpacity style={[{ height: this.state.expanded ? null : 0, overflow: 'hidden' }]}>
+                                <DeckList
+                                borderStyle="a b c"
+                                itemDeck={item.name}
+                                itemTable={subitem.name}
+                                keyName="customer Name:" itemName={subitem.name}
+                                keyReserved="Reserved from:" itemFrom={subitem.name} itemTo={subitem.name}
+                                keyGuests="Guests:" itemGuests={subitem.name}
+                                itemReservedTime={subitem.name}
+                            />
+                            </TouchableOpacity> 
+                            
+                        : null
+           
+                        )}
+                        
+                  
+
+                </View>)}
+               
+                <TouchableOpacity activeOpacity={0.8} onPress={() => this.changeLayout(1)}>
+                    <Text >open search filter</Text>
+                </TouchableOpacity>
+
+
                 <Modal
                     animationType={'fade'}
                     transparent={true}
@@ -380,9 +463,8 @@ export default class filteredDeck extends Component {
                         </View>
                     </View>
                 </Modal>
-                <ScrollView>
-                    {
-                        this.state.data.map((item) => {
+                
+                    {this.state.data.map((item) => {
                             return <Collapse key={item.key}
                                 onToggle={(isCollapsed) => this.checkToggle(isCollapsed, item.id)}>
 
@@ -452,6 +534,9 @@ export default class filteredDeck extends Component {
                         color='#C11A2C'
                     />
                 </TouchableOpacity> : null}
+                 {/* <View style={{ height: this.state.expanded ? null : 0, overflow: 'hidden' }}>
+                    <View style={{ background: 'white', height: 250 }}></View>
+                </View>  */}
             </View>
         )
     }
@@ -565,4 +650,29 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         padding: 10,
     },
+    
+    notificationBox: {
+        padding: 10,
+        marginTop: 5,
+        marginBottom: 0,
+        backgroundColor: '#DEE3EC',
+        borderRadius: 10,
+        borderBottomWidth: 2,
+        borderBottomColor: 'grey',
+        display: 'flex'
+    },
+    subnotificationBox: {
+        justifyContent: 'space-between',
+        flexDirection: 'row'
+    },
+    
+    fakeCard: {
+         
+        marginVertical: 0,
+        marginHorizontal: 0,
+        backgroundColor: '#eeeeee',
+        padding: 0,
+        borderLeftWidth: 0,
+
+    }
 })

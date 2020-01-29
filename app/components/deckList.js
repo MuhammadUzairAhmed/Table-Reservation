@@ -22,8 +22,11 @@ export default class DeckList extends Component {
     // }
     render() {
         return (
-            <View >
-                <View style={{ display: 'flex' }}>
+            <View style={[styles.card, {borderColor: this.props.borderStyle.split(" ").pop() == 'ago' ? 'green' :
+            this.props.borderStyle.split(" ").pop() == 'hours' && this.props.borderStyle[3] <= 3 && this.props.borderStyle[4] == '' && this.props.borderStyle[3] >= 0 ? 'orange' :
+            this.props.borderStyle.split(" ").pop() == 'hour' ? 'red' :'blue' 
+            }]}>
+                <View style={[{ display: 'flex' }]}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                         <Text style={[styles.description1]}>Deck: {this.props.itemDeck}</Text>
                         <Text style={[styles.description1]}>Table: {this.props.itemTable} </Text>
@@ -73,5 +76,14 @@ const styles = StyleSheet.create({
         flex: 1,
         color: "grey",
         fontWeight: 'bold',
-    }
+    },
+    card: {
+         
+        marginVertical: 10,
+        marginHorizontal: 20,
+        backgroundColor: '#eeeeee',
+        padding: 10,
+        borderLeftWidth: 6,
+
+    },
 })
