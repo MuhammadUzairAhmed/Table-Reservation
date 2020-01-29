@@ -89,7 +89,7 @@ constructor(props){
     }
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
-      }
+    }
     render() {
         const { name, contact, altContact, guests, category, location, smoke, other, isDateTimePickerVisible, selectedDateTime } = this.state
         return (
@@ -104,7 +104,7 @@ constructor(props){
                         <View style={styles.popup}>
                         <View style={styles.popupContent}>
                             <ScrollView contentContainerStyle={styles.modalInfo}>
-                            <Text>Name: {name}</Text>
+                            <View><Text>Name: </Text><Text>{name}</Text></View>
                             <Text>Contact: {contact}</Text>
                             <Text>Secondary Contact: {altContact}</Text>
                             <Text>Guests: {guests}</Text>
@@ -133,7 +133,7 @@ constructor(props){
                     <TouchableOpacity onPress={()=>this.changeLayout('PI')} style={styles.notificationBox}>
                         <View style={styles.subnotificationBox}>
                             <View style={{ marginTop: 3 }}>
-                                <Icons name='user' size={15} color="white" />
+                                <Icons name='user' size={15} color="black" />
                             </View>
                             <View style={{ marginLeft: 20 }}>
                                 <Text style={styles.descriptionForm}>Personal Information</Text>
@@ -169,7 +169,7 @@ constructor(props){
                     <TouchableOpacity onPress={()=>this.changeLayout('DI')} style={styles.notificationBox}>
                         <View style={styles.subnotificationBox}>
                             <View style={{ marginTop: 3 }}>
-                                <Icons name='user' size={15} color="white" />
+                                <Icons name='user' size={15} color="black" />
                             </View>
                             <View style={{ marginLeft: 20 }}>
                                 <Text style={styles.descriptionForm}>Categories</Text>
@@ -213,7 +213,7 @@ constructor(props){
                     <TouchableOpacity onPress={this.showDateTimePicker} style={styles.notificationBox}>
                         <View style={styles.subnotificationBox}>
                             <View style={{ marginTop: 3 }}>
-                                <Icons name='user' size={15} color="white" />
+                                <Icons name='user' size={15} color="black" />
                             </View>
                             <View style={{ marginLeft: 20 }}>
                                 <Text style={styles.descriptionForm}>{selectedDateTime != '' ? '':'Set time'}</Text>
@@ -233,7 +233,7 @@ constructor(props){
                      <TouchableOpacity onPress={()=>this.changeLayout('OI')} style={styles.notificationBox}>
                         <View style={styles.subnotificationBox}>
                             <View style={{ marginTop: 3 }}>
-                                <Icons name='user' size={15} color="white" />
+                                <Icons name='user' size={15} color="black" />
                             </View>
                             <View style={{ marginLeft: 20 }}>
                                 <Text style={styles.descriptionForm}>Add more Details (Optional)</Text>
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 5,
         marginBottom: 0,
-        backgroundColor: 'green',
+        backgroundColor: '#DEE3EC',
         flexDirection: 'row',
         borderRadius: 10,
         borderBottomWidth: 2,
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     },
     descriptionForm: {
         fontSize: 18,
-        color: "white",
+        color: "black",
     },
     popup: {
         backgroundColor: 'white',
