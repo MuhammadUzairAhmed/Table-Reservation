@@ -16,13 +16,21 @@ import EventCalender from './app/components/eventCalender'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { createStackNavigator, createAppContainer, createSwitchNavigator, createDrawerNavigator, createBottomTabNavigator } from "react-navigation";
-import {View,Text} from 'react-native'
+import { View, Text } from 'react-native'
+
+import createSagaMiddleware from 'redux-saga'
+import { watchDeckInc } from './app/Saga/sagas'
+
+//redux setup
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import allReducer from './app/reducers'
 
 const deckForBottom = createStackNavigator({
   Deck: Deck,
   EventCalender,
-},{
-  defaultNavigationOptions:{
+}, {
+  defaultNavigationOptions: {
     title: 'Deck View'
   }
 })
@@ -30,12 +38,12 @@ const deckForBottom = createStackNavigator({
 const preferenceForBottom = createStackNavigator({
   Preferences,
   Prefrence: NewReservation,
-  Dashboards:DashboardScreen,
+  Dashboards: DashboardScreen,
   Preview: PreviewReservation,
   EventCalender,
   EditReservation
-},{
-  defaultNavigationOptions:{
+}, {
+  defaultNavigationOptions: {
     title: 'Customers',
   }
 })
@@ -43,8 +51,8 @@ const preferenceForBottom = createStackNavigator({
 const Reservation = createStackNavigator({
   // Welcome: Welcome,
   Reservation: BookedUser,
-  FilteredDeck : FilteredData,
-  
+  FilteredDeck: FilteredData,
+
 })
 
 const bottomTabs = createBottomTabNavigator({
@@ -52,39 +60,39 @@ const bottomTabs = createBottomTabNavigator({
   Deck: deckForBottom,
   Preferences: preferenceForBottom,
 },
-{
-  defaultNavigationOptions: ({ navigation }) => ({
-    tabBarIcon: ({ focused, horizontal, tintColor }) => {
-      const { routeName } = navigation.state;
-      // let IconComponent = Ionicons;
-      let iconName;
-      if (routeName === 'Deck') {
-        iconName = 'restaurant'
-      } else if (routeName === 'Preferences') {
-        iconName = 'assignment'
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        // let IconComponent = Ionicons;
+        let iconName;
+        if (routeName === 'Deck') {
+          iconName = 'restaurant'
+        } else if (routeName === 'Preferences') {
+          iconName = 'assignment'
+        }
+        else if (routeName === 'Reservation') {
+          iconName = 'date-range'
+        }
+        // You can return any component that you like here!
+        return <View ><Icon name={iconName} size={26} color={tintColor} />
+        </View>
+
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: 'white',
+      inactiveTintColor: 'gray',
+      activeBackgroundColor: 'green',
+      labelStyle: {
+        fontSize: 13
+      },
+      style: {
+        borderTopColor: 'green',
+        borderTopWidth: 1
       }
-      else if (routeName === 'Reservation') {
-        iconName = 'date-range'
-      }
-      // You can return any component that you like here!
-    return <View ><Icon name={iconName} size={26} color={tintColor} />
-    </View>
-                                  
-    },
-  }),
-  tabBarOptions: {
-    activeTintColor: 'white',
-    inactiveTintColor: 'gray',
-    activeBackgroundColor:'green',
-    labelStyle:{
-      fontSize:13
-    },
-    style:{
-    borderTopColor:'green',
-    borderTopWidth:1 
     }
   }
-}
 );
 
 const DrawerNavigator = createDrawerNavigator(
@@ -112,7 +120,17 @@ const AppNavigator = createStackNavigator({
 const switchNavigator = createSwitchNavigator({
   stack: AppNavigator,
   Dashboard: DrawerNavigator
-  
-})
 
-export default createAppContainer(switchNavigator);
+})
+const AppContainer = createAppContainer(switchNavigator);
+const sagaMiddleware = createSagaMiddleware()
+// let store = createStore(allReducer,applyMiddleware(sagaMiddleware))
+let store = createStore(allReducer)
+// sagaMiddleware.run(watchDeckInc)
+export default class App extends Component {
+  render() {
+    return <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  }
+}

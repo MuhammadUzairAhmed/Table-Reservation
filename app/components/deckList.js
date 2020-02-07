@@ -40,6 +40,9 @@ export default class DeckList extends Component {
                             {this.props.booked == true ? <Text style={[styles.description]}>{this.props.keyReserved} {this.props.itemFrom} - {this.props.itemTo}</Text> : null}
                             <Text style={[styles.description]}>{this.props.keyGuests} {this.props.itemGuests}</Text>
                             <Text style={[styles.description]}>{this.props.itemReservedTime}</Text>
+                            {this.props.booked == false && <TouchableOpacity   onPress={() => this.props.checkSchedule(this.props.time_id)} style={{ paddingTop: 7, display: 'flex', justifyContent: 'space-around', flexDirection: 'row', backgroundColor: 'orange', padding: 5, margin: 2, width: 100, borderBottomWidth: 2, borderRadius: 8 }}>
+                                <Text>Check Time</Text>
+                            </TouchableOpacity>}
                         </View>
                         {this.props.booked == true || this.props.deck == true ? <View >
                             <View style={{ display: 'flex' }}>

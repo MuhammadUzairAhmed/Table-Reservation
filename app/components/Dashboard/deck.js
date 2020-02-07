@@ -35,6 +35,7 @@ export default class filteredDeck extends Component {
             reservationForm: false,
             refresh: false,
             futureReserve: '',
+            expanded1:false,
             justview: '',
             data: [
                 {
@@ -203,7 +204,14 @@ export default class filteredDeck extends Component {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({ expanded: !this.state.expanded, itemid: id });
     }
+    changeLayout1 = (id) => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        this.setState({ expanded1: !this.state.expanded});
+    }
 
+    getSchedule =(value)=>{
+        console.log(value,'getSchedule')
+    }
     onValueChange2(value) {
         this.setState({
             selected2: value
@@ -366,7 +374,7 @@ export default class filteredDeck extends Component {
             <View style={{ flex: 1 }}>
                 <ScrollView>
                 {getFetchedData.map(item => <View>
-                    <TouchableOpacity onPress={()=>this.changeLayout(item.id)} style={styles.notificationBox}>
+                    <TouchableOpacity onPress={()=>item.totalTables>0?this.changeLayout(item.id):null} style={styles.notificationBox}>
                         <View style={styles.subnotificationBox}>
                             <View >
                             <Text>{item.name}</Text>
@@ -384,13 +392,16 @@ export default class filteredDeck extends Component {
                             subitem.deck_id == item.id && subitem.deck_id == this.state.itemid? 
                             <TouchableOpacity style={[{ height: this.state.expanded ? null : 0, overflow: 'hidden' }]}>
                                 <DeckList
+                                booked={false}
                                 borderStyle="a b c"
                                 itemDeck={item.name}
                                 itemTable={subitem.name}
                                 keyName="customer Name:" itemName={subitem.name}
                                 keyReserved="Reserved from:" itemFrom={subitem.name} itemTo={subitem.name}
                                 keyGuests="Guests:" itemGuests={subitem.name}
+                                time_id={subitem.time_id}
                                 itemReservedTime={subitem.name}
+                                checkSchedule={this.getSchedule}
                             />
                             </TouchableOpacity> 
                             
@@ -402,9 +413,7 @@ export default class filteredDeck extends Component {
 
                 </View>)}
                
-                <TouchableOpacity activeOpacity={0.8} onPress={() => this.changeLayout(1)}>
-                    <Text >open search filter</Text>
-                </TouchableOpacity>
+              
 
 
                 <Modal
@@ -534,9 +543,9 @@ export default class filteredDeck extends Component {
                         color='#C11A2C'
                     />
                 </TouchableOpacity> : null}
-                 {/* <View style={{ height: this.state.expanded ? null : 0, overflow: 'hidden' }}>
+                 <View style={{ height: this.state.expanded1 ? null : 0, overflow: 'hidden' }}>
                     <View style={{ background: 'white', height: 250 }}></View>
-                </View>  */}
+                </View> 
             </View>
         )
     }

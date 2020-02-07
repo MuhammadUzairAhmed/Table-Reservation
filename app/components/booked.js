@@ -17,8 +17,11 @@ import moment from 'moment'
 import Icons from 'react-native-vector-icons/AntDesign';
 import Header from './Header/header'
 import DeckList from './deckList'
+import {connect} from 'react-redux'
+import {increaseDeck} from '../action'
+
 var arr = [];
-export default class Users extends Component {
+class Users extends Component {
     static navigationOptions = {
         header: null
     }
@@ -37,7 +40,8 @@ export default class Users extends Component {
             locationData: [],
             reservedData: [],
             search: '',
-            workinproperly:false
+            workinproperly:false,
+            expanded1:false
         };
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -46,6 +50,7 @@ export default class Users extends Component {
 
     componentDidMount() {
 
+        this.props.onDeckInc(1)
         //get table data
         reservationData.getTableData()
             .then((res) => { return res.json() })
@@ -155,7 +160,7 @@ export default class Users extends Component {
             }
 
         }
-        this.setState({ reservedData: arr,workinproperly:true })
+        this.setState({ reservedData: arr },()=>this.setState({workinproperly:true}))
     }
     sortedList = () => {
         const { sort } = this.state
@@ -174,6 +179,10 @@ export default class Users extends Component {
     changeLayout = () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({ expanded: !this.state.expanded });
+    }
+    changeLayout1 = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        this.setState({ expanded1: !this.state.expanded1 });
     }
     changeHours = (itemValue, itemIndex) => {
         this.setState({ language: itemValue }, () => {
@@ -238,6 +247,10 @@ export default class Users extends Component {
         return (
             <View style={styles.container}>
                 <Header />
+                <TouchableOpacity activeOpacity={0.8} onPress={this.changeLayout1}>
+                    <Text >open search filter</Text>
+                </TouchableOpacity>
+                {console.log(this.props.decinc,'redux')}
                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
 
                     <TouchableOpacity style={{ margin: 2, display: 'flex', justifyContent: 'space-between', flexDirection: 'row', backgroundColor: 'orange', paddingRight: 6, borderBottomWidth: 2, borderRadius: 8 }} onPress={this.sortedList}>
@@ -318,10 +331,29 @@ export default class Users extends Component {
                         color='#C11A2C'
                     />
                 </TouchableOpacity>
+                <View style={{ height: this.state.expanded1 ? null : 0, overflow: 'hidden' }}>
+                    <View style={{ background: 'white', height: 250 }}></View>
+                </View> 
             </View>
         );
     }
 }
+
+const mapStateToProps = state =>{
+    return{
+        decinc: state.gro ? state.gro.user : 0
+    }
+}
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        onDeckInc:(step)=>{
+            dispatch(increaseDeck(step))
+        }
+    }
+}
+const DeckContainer = connect(mapStateToProps,mapDispatchToProps)(Users)
+export default DeckContainer
 
 const styles = StyleSheet.create({
    container: {
